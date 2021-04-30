@@ -20,7 +20,10 @@ Route::group(['middeware' => 'web'], function(){
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::get('/books', [App\Http\Controllers\BooksController::class, 'index'])->name('books');
+    Route::prefix('books')->group(function () {
+        Route::get('/', [App\Http\Controllers\BooksController::class, 'index'])->name('books');
+    });
+
 });
 
 

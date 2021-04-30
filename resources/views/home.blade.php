@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    Abrir a lista de <a href="{{ url('books') }}">Livros</a>
                 </div>
             </div>
         </div>
