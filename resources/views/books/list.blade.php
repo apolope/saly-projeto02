@@ -13,7 +13,11 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    @if(Session::has('message'))
+                        <div class="alert {{ \Session::get('alert-class', 'alert-info') }}" role="alert" id="success-alert">
+                            {{ \Session::get('message') }}
+                        </div>
+                    @endif
                     <h3>Lista dos Livros</h3>
 
                     <table class="table">

@@ -22,6 +22,8 @@ Route::group(['middeware' => 'web'], function(){
 
     Route::prefix('books')->group(function () {
         Route::get('/', [App\Http\Controllers\BooksController::class, 'index'])->name('books');
+        Route::get('/new', [App\Http\Controllers\BooksController::class, 'new'])->name('books.new');
+        Route::post('/add', [App\Http\Controllers\BooksController::class, 'add'])->name('books.add');
     });
 
 });
