@@ -15,13 +15,18 @@ class BooksController extends Controller
         return view('books.list', ['books' => $books]);
     }
 
-    public function new()
+    public function create()
     {
         return view('books.form');
     }
 
-    public function add(Request $request)
+    public function store(Request $request)
     {
+        $this->validate($request,[
+            'title' => 'required',
+            'author' => 'required',
+            'donor' => 'required'
+        ]);
         $book = new Book;
         $book = $book->create($request->all());
         $sessionString = 'O livro ' . $book->title . ' foi cadastrado com sucesso!';

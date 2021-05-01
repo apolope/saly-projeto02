@@ -18,12 +18,12 @@ Route::group(['middeware' => 'web'], function(){
 
     Auth::routes();
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 
     Route::prefix('books')->group(function () {
-        Route::get('/', [App\Http\Controllers\BooksController::class, 'index'])->name('books');
-        Route::get('/new', [App\Http\Controllers\BooksController::class, 'new'])->name('books.new');
-        Route::post('/add', [App\Http\Controllers\BooksController::class, 'add'])->name('books.add');
+        Route::get('/', [App\Http\Controllers\BooksController::class, 'index']);
+        Route::get('/create', [App\Http\Controllers\BooksController::class, 'create']);
+        Route::post('/store', [App\Http\Controllers\BooksController::class, 'store']);
     });
 
 });

@@ -27,6 +27,7 @@
                             <th scope="col">Autor</th>
                             <th scope="col">Doador</th>
                             <th scope="col">Inclusão</th>
+                            <th scope="col">Editar</th>
                         </tr>
                         @foreach ($books as $b)
                             <tr>
@@ -35,11 +36,16 @@
                                 <td>{{ $b->author }}</td>
                                 <td>{{ $b->donor }}</td>
                                 <td>{{ \Carbon\Carbon::parse($b->created_at)->format('d/m/Y') }}</td>
+                                <td>
+                                    <a href='{{ url('books/edit/' . $b->id) }}'>
+                                        <button type="button" class="btn btn-success">Editar</button>
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     </table>
                     <div class="justify-content-end">
-                        <a href='{{ url('books/new') }}'><button type="button" class="btn btn-success">Adicionar Novo Livro</button></a>
+                        <a href='{{ url('books/create') }}'><button type="button" class="btn btn-success">Adicionar Novo Livro</button></a>
                     </div>
                 </div>
             </div>
