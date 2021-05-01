@@ -8,6 +8,16 @@ use Session;
 
 class BooksController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $books = Book::get();
@@ -56,6 +66,20 @@ class BooksController extends Controller
         $sessionString = 'O livro ' . $bookHandler->title . ' foi atualizado com sucesso!';
         Session::flash('message', $sessionString);
         Session::flash('alert-class', 'alert-success');
+        return redirect('books');
+    }
+
+    public function delete($id)
+    {
+        $book = new Book;
+        $bookHandler = $book::find($id);
+        $title = $bookHandler->title;
+        if ($bookHandler) {
+            $bookHandler::destroy($id);
+        }
+        $sessionString = 'O livro ' . $title . ' foi deletado com sucesso!';
+        Session::flash('message', $sessionString);
+        Session::flash('alert-class', 'alert-danger');
         return redirect('books');
     }
 }

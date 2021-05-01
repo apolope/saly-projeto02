@@ -28,25 +28,62 @@
                             <th scope="col">Doador</th>
                             <th scope="col">Inclusão</th>
                             <th scope="col">Editar</th>
+                            <th scope="col">Excluir</th>
                         </tr>
                         @foreach ($books as $b)
-                            <tr>
-                                <td>{{ $b->id }}</td>
-                                <td>{{ $b->title }}</td>
-                                <td>{{ $b->author }}</td>
-                                <td>{{ $b->donor }}</td>
-                                <td>{{ \Carbon\Carbon::parse($b->created_at)->format('d/m/Y') }}</td>
-                                <td>
-                                    <a href='{{ url('books/edit/' . $b->id) }}'>
-                                        <button type="button" class="btn btn-success">Editar</button>
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{ $b->id }}</td>
+                            <td>{{ $b->title }}</td>
+                            <td>{{ $b->author }}</td>
+                            <td>{{ $b->donor }}</td>
+                            <td>{{ \Carbon\Carbon::parse($b->created_at)->format('d/m/Y') }}</td>
+                            <td>
+                                <a href='{{ url('books/edit/' . $b->id) }}'>
+                                    <button type="button" class="btn btn-success">Editar</button>
+                                </a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalId{{ $b->id }}">
+                                    Excluir
+                                </button>
+                                <form
+                                    id='formDeleteId{{ $b->id }}'
+                                    action='{{ url('books/delete/' . $b->id) }}'
+                                    method='post'
+                                >
+                                    @csrf
+                                    @method('delete')
+                                </form>
+                            </td>
+                            {{-- Modal confirm to delete --}}
+                            <div class="modal fade" id="modalId{{ $b->id }}" tabindex="-1" aria-labelledby="modalId{{ $b->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Deletar Livro</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Deletar o livro : {{ $b->title }}?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <button type="submit" form="formDeleteId{{ $b->id }}" class="btn btn-danger">Excluir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
                         @endforeach
                     </table>
+
                     <div class="justify-content-end">
                         <a href='{{ url('books/create') }}'><button type="button" class="btn btn-success">Adicionar Novo Livro</button></a>
                     </div>
+
+
                 </div>
             </div>
         </div>

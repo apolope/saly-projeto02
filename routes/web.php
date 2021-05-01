@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Auth\Middleware\Authenticate;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middeware' => 'web'], function(){
+Route::group(['middeware' => 'auth'], function(){
     Route::get('/',  [App\Http\Controllers\HomeController::class, 'index']);
 
     Auth::routes();
@@ -26,10 +27,8 @@ Route::group(['middeware' => 'web'], function(){
         Route::post('/store', [App\Http\Controllers\BooksController::class, 'store']);
         Route::get('/edit/{id}', [App\Http\Controllers\BooksController::class, 'edit']);
         Route::post('/update/{id}', [App\Http\Controllers\BooksController::class, 'update']);
+        Route::delete('/delete/{id}', [App\Http\Controllers\BooksController::class, 'delete']);
+
     });
 
 });
-
-
-
-
