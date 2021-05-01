@@ -24,6 +24,8 @@ Route::group(['middeware' => 'web'], function(){
         Route::get('/', [App\Http\Controllers\BooksController::class, 'index']);
         Route::get('/create', [App\Http\Controllers\BooksController::class, 'create']);
         Route::post('/store', [App\Http\Controllers\BooksController::class, 'store']);
+        Route::get('/edit/{id}', [App\Http\Controllers\BooksController::class, 'edit']);
+        Route::post('/update/{id}', [App\Http\Controllers\BooksController::class, 'update']);
     });
 
 });
