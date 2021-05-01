@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Livros') }}</div>
+                <div class="card-header"><a href='{{ url('books') }}'>Voltar</a></div>
 
                 <div class="card-body">
                     @if ($errors->any())
