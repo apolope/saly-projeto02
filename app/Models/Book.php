@@ -15,8 +15,13 @@ class Book extends Model
         'user_id'
     ];
 
-    public function user()
+    public function donor()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function lends()
+    {
+        return $this->belongsToMany(Lend::class, 'lend_book');
     }
 }
