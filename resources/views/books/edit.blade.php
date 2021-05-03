@@ -34,7 +34,16 @@
                         </div>
                         <div class="form-group">
                             <label for="donor">Doador</label>
-                            <input type="text" class="form-control" name="donor" aria-describedby="donorHelp" placeholder="Digite aqui que foi o doador do livro" value='{{ $book->donor }}' required>
+                            {{ Form::select(
+                                'user_id',
+                                $users,
+                                old('user_id',
+                                $book->user_id),
+                                [
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Selecionar o doador do livro'
+                                ]
+                            ) }}
                         </div>
                         <div class="justify-content-end">
                             <button type="submit" class="btn btn-success">Atualizar Novo Livro</button>

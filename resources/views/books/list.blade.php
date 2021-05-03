@@ -35,7 +35,7 @@
                             <td>{{ $b->id }}</td>
                             <td>{{ $b->title }}</td>
                             <td>{{ $b->author }}</td>
-                            <td>{{ $b->donor }}</td>
+                            <td>{{ $b->user->name }}</td>
                             <td>{{ \Carbon\Carbon::parse($b->created_at)->format('d/m/Y') }}</td>
                             <td>
                                 <a href='{{ url('books/edit/' . $b->id) }}'>

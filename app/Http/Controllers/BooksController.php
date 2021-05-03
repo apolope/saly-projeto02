@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\User;
 use Session;
+use Illuminate\Support\Facades\Auth;
 
 class BooksController extends Controller
 {
@@ -20,7 +22,7 @@ class BooksController extends Controller
 
     public function index()
     {
-        $books = Book::get();
+        $books = Book::with('user')->get();
 
         return view('books.list', ['books' => $books]);
     }
@@ -34,8 +36,7 @@ class BooksController extends Controller
     {
         $this->validate($request,[
             'title' => 'required',
-            'author' => 'required',
-            'donor' => 'required'
+            'author' => 'required'
         ]);
         $book = new Book;
         $book = $book->create($request->all());
@@ -47,9 +48,9 @@ class BooksController extends Controller
 
     public function edit($id)
     {
-        $book = new Book;
-        $book = $book->findOrFail($id);
-        return view('books.edit', ['book' => $book]);
+        $book = Book::findOrFail($id);
+        $users = User::pluck('name', 'id');
+        return view('books.edit', ['book' => $book, 'users' => $users]);
     }
 
     public function update($id, Request $request)
@@ -57,7 +58,7 @@ class BooksController extends Controller
         $this->validate($request,[
             'title' => 'required',
             'author' => 'required',
-            'donor' => 'required'
+            'user_id' => 'required'
         ]);
         $book = new Book;
         $bookHandler = $book::findOrFail($id);
