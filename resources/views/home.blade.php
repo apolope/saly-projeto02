@@ -13,7 +13,8 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    Abrir a lista de <a href="{{ url('lends') }}">Emprestimos</a>
+                    <br />
                     Abrir a lista de <a href="{{ url('books') }}">Livros</a>
                 </div>
             </div>
