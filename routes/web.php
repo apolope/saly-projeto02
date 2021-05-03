@@ -31,4 +31,15 @@ Route::group(['middeware' => 'auth'], function(){
 
     });
 
+    Route::prefix('lends')->group(function () {
+        Route::get('/', [App\Http\Controllers\LendsController::class, 'index']);
+        Route::get('/returned', [App\Http\Controllers\LendsController::class, 'returned']);
+        Route::get('/create', [App\Http\Controllers\LendsController::class, 'create']);
+        Route::post('/store', [App\Http\Controllers\LendsController::class, 'store']);
+        Route::get('/edit/{id}', [App\Http\Controllers\LendsController::class, 'edit']);
+        Route::post('/update/{id}', [App\Http\Controllers\LendsController::class, 'update']);
+        Route::delete('/delete/{id}', [App\Http\Controllers\LendsController::class, 'delete']);
+
+    });
+
 });
