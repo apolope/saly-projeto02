@@ -22,7 +22,7 @@ class BooksController extends Controller
 
     public function index()
     {
-        $books = Book::with('user')->get();
+        $books = Book::with('donor')->get();
 
         return view('books.list', ['books' => $books]);
     }
