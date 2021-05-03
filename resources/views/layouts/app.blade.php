@@ -34,7 +34,12 @@
                     <!-- Left Side Of Navbar -->
                     @if (Auth::check())
                         <ul class="navbar-nav mr-auto">
-                            <a href="{{ url('books') }}">Livros</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('lends') }}">Emprestimos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('books') }}">Livros</a>
+                            </li>
                         </ul>
                     @endif
 
