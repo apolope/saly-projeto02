@@ -14,12 +14,10 @@ use Illuminate\Auth\Middleware\Authenticate;
 |
 */
 
-Route::group(['middeware' => 'auth'], function(){
-    Route::get('/',  [App\Http\Controllers\HomeController::class, 'index']);
-
+Route::group(['middeware' => 'web'], function(){
     Auth::routes();
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
+    Route::get('/',  [App\Http\Controllers\HomeController::class, 'index']);
 
     Route::prefix('books')->group(function () {
         Route::get('/', [App\Http\Controllers\BooksController::class, 'index']);
@@ -27,8 +25,7 @@ Route::group(['middeware' => 'auth'], function(){
         Route::post('/store', [App\Http\Controllers\BooksController::class, 'store']);
         Route::get('/edit/{id}', [App\Http\Controllers\BooksController::class, 'edit']);
         Route::post('/update/{id}', [App\Http\Controllers\BooksController::class, 'update']);
-        Route::delete('/delete/{id}', [App\Http\Controllers\BooksController::class, 'delete']);
-
+        Route::delete('/delete/{id}', [App\Http\Controllers\BooksController::class, 'destroy']);
     });
 
     Route::prefix('lends')->group(function () {
@@ -37,10 +34,6 @@ Route::group(['middeware' => 'auth'], function(){
         Route::post('/devolution/{id}', [App\Http\Controllers\LendsController::class, 'devolution']);
         Route::get('/create', [App\Http\Controllers\LendsController::class, 'create']);
         Route::post('/store', [App\Http\Controllers\LendsController::class, 'store']);
-        Route::get('/edit/{id}', [App\Http\Controllers\LendsController::class, 'edit']);
-        Route::post('/update/{id}', [App\Http\Controllers\LendsController::class, 'update']);
-        Route::delete('/delete/{id}', [App\Http\Controllers\LendsController::class, 'delete']);
-
+        Route::delete('/delete/{id}', [App\Http\Controllers\LendsController::class, 'destroy']);
     });
-
 });
