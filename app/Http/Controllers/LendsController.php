@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Lend;
 use App\Models\Book;
 use App\Models\User;
+use App\Models\LendBook;
 use Illuminate\Http\Request;
 use Session;
+use Illuminate\Support\Facades\Auth;
 
 class LendsController extends Controller
 {
@@ -56,11 +58,7 @@ class LendsController extends Controller
         })->get();
         $books = Book::WhereNotIn('id', $active->pluck('id')->toArray())->get()->pluck('title', 'id')->toArray();
         $users = User::all()->pluck('name', 'id');
-
         return view('lends.form', ['books' => $books, 'users' => $users]);
-
-
-
 
     }
 
@@ -72,61 +70,59 @@ class LendsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'lender_user_id' => 'required',
+            'selectBooksList' => 'required|array|min:1'
+        ]);
+        $lend = Lend::create([
+            'return' => false,
+            'return_forecast' => $request->return_forecast,
+            'lender_user_id' => $request->lender_user_id,
+            'user_id' => Auth::user()->id,
+        ]);
+        foreach ($request->selectBooksList as $b) {
+            LendBook::create([
+                'lend_id' => $lend->id,
+                'book_id' => $b,
+                ]);
+            }
+        $books_title = [];
+        foreach (Book::whereIn('id', $request->selectBooksList)->get() as $b) {
+            array_push($books_title, $b->title);
+        }
+        $sessionString = 'Saída do(s) livro(s) ' . implode(', ', $books_title) . ' cadastrada com sucesso!';
+        Session::flash('message', $sessionString);
+        Session::flash('alert-class', 'alert-success');
+        return redirect('lends');
     }
 
     /**
-     * Display the specified lend.
+     * Remove the specified lend from database.
      *
-     * @param  \App\Models\Lends  $lends
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Lends $lends)
+    public function destroy(int $id)
     {
-        //
+        $Lend = Lend::Find($id);
+        $books_title = $Lend->books->pluck('title')->toArray();
+        if ($Lend) {
+            $Lend::destroy($id);
+        }
+        $sessionString = 'Saída do(s) livro(s) ' . implode(', ', $books_title) . ' excluída com sucesso!';
+        Session::flash('message', $sessionString);
+        Session::flash('alert-class', 'alert-danger');
+        return redirect('lends');
     }
 
     /**
-     * Show the form for editing the specified lend.
+     * Remove the specified lend from database.
      *
-     * @param  \App\Models\Lends  $lends
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Lends $lends)
-    {
-        //
-    }
-
-    /**
-     * Update the specified lend in database.
-     *
+     * @param  int  $id
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Lends  $lends
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Lends $lends)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified lend from database.
-     *
-     * @param  \App\Models\Lends  $lends
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Lends $lends)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified lend from database.
-     *
-     * @param  \App\Models\Lends  $lends
-     * @return \Illuminate\Http\Response
-     */
-    public function devolution(Request $request, int $id)
+    public function devolution(int $id, Request $request)
     {
         $lend = new Lend();
         $lendHandler = $lend::findOrFail($id);
