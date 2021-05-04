@@ -9,6 +9,8 @@ class LendBook extends Model
 {
     use HasFactory;
 
+    protected $table = 'lend_book';
+
     protected $fillable = [
         'comments',
         'lend_id',
