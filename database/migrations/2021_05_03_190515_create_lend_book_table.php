@@ -19,8 +19,8 @@ class CreateLendBookTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('lend_id');
             $table->unsignedBigInteger('book_id');
-            $table->foreign('lend_id')->references('id')->on('lends');
-            $table->foreign('book_id')->references('id')->on('books');
+            $table->foreign('lend_id')->references('id')->on('lends')->onDelete('cascade');
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
         });
     }
 
