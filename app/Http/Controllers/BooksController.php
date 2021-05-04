@@ -20,6 +20,11 @@ class BooksController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * Display a listing of the bokks.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $books = Book::with('donor')->get();
@@ -27,11 +32,22 @@ class BooksController extends Controller
         return view('books.list', ['books' => $books]);
     }
 
+     /**
+     * Show the form for creating a new book.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         return view('books.form');
     }
 
+    /**
+     * Store a newly created book in database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $this->validate($request,[
@@ -46,39 +62,55 @@ class BooksController extends Controller
         return redirect('books');
     }
 
-    public function edit($id)
+    /**
+     * Edit the specified book from database.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(int $id)
     {
         $book = Book::findOrFail($id);
         $users = User::pluck('name', 'id');
         return view('books.edit', ['book' => $book, 'users' => $users]);
     }
 
-    public function update($id, Request $request)
+    /**
+     * Update the specified book from database.
+     *
+     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(int $id, Request $request)
     {
         $this->validate($request,[
             'title' => 'required',
             'author' => 'required',
             'user_id' => 'required'
         ]);
-        $book = new Book;
-        $bookHandler = $book::findOrFail($id);
-        $book = $bookHandler->update($request->all());
-        $bookHandler = $bookHandler::findOrFail($id);
-        $sessionString = 'O livro ' . $bookHandler->title . ' foi atualizado com sucesso!';
+        $book = Book::findOrFail($id);
+        $book->update($request->all());
+        $sessionString = 'O livro ' . $book->title . ' foi atualizado com sucesso!';
         Session::flash('message', $sessionString);
         Session::flash('alert-class', 'alert-success');
         return redirect('books');
     }
 
-    public function delete($id)
+    /**
+     * Remove the specified book from database.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(int $id)
     {
-        $book = new Book;
-        $bookHandler = $book::find($id);
-        $title = $bookHandler->title;
-        if ($bookHandler) {
-            $bookHandler::destroy($id);
+        $book = Book::Find($id);
+        $book_title = $book->title;
+        if ($book) {
+            $book::destroy($id);
         }
-        $sessionString = 'O livro ' . $title . ' foi deletado com sucesso!';
+        $sessionString = 'O livro ' . $book_title . ' foi deletado com sucesso!';
         Session::flash('message', $sessionString);
         Session::flash('alert-class', 'alert-danger');
         return redirect('books');
